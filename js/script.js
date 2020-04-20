@@ -3,3 +3,5 @@ $(document).ready(function () {
   $(".datepicker").datepicker();
   $("select").formSelect();
 });
+
+$("body").css("background", "red");
