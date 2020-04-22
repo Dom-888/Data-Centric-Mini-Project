@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
     <ul class="collapsible" data-collapsible="accordion">
         {% for task in tasks %}
         <li>
@@ -11,7 +10,7 @@
             </div>
             <div class="collapsible-body">
                 <span>
-                    {{task.task_description}}
+                    {{task.task_description}} 
                 </span>
             </div>
         </li>
