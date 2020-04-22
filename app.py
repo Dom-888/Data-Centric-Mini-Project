@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
+from bson.objectid import ObjectId # Necessario alla funzione edit_task
 
 # Collega il database al repo
 app = Flask(__name__)
@@ -23,13 +23,20 @@ def add_task():
     return render_template('addtask.html',
     categories=mongo.db.categories.find())  # La variabile categories contiene i risultati della query categories.find(). E' possibile estrarli con un for loop
 
-# Attiva il submit button (Add task)
-# Insert task va inserito nel form tag
-@app.route('/insert_task', methods=['POST'])
+# Attiva l'add task button 
+@app.route('/insert_task', methods=['POST']) # Insert task va inserito nel form tag con jinja
 def insert_task():
     tasks = mongo.db.tasks
     tasks.insert_one(request.form.to_dict())
     return redirect(url_for('get_tasks'))
+
+# Attiva l'edit button
+@app.route('/edit_task/<task_id>')
+def edit_task(task_id):
+    the_task = mongo.db.task.find_one({"_id": ObjectId(task_id)})
+    all_categories = mongo.db.categories.find()
+    return render_template('edittask.html', task=the_task, categories=all_categories)
+
 
 
 if __name__ == '__main__':
