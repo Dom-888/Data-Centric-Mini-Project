@@ -11,7 +11,7 @@ app.config["MONGO_URI"] = 'mongodb+srv://RK3n:cimpalimpa089@cluster0-1hvju.mongo
 mongo = PyMongo(app)
 
 
-@app.route('/') # Determine the landing page
+
 @app.route('/get_tasks')
 def get_tasks():
     return render_template("tasks.html", tasks=mongo.db.tasks.find())
@@ -56,6 +56,11 @@ def update_task(task_id):
     })
     return redirect(url_for('get_tasks'))
 
+@app.route('/') 
+@app.route('/get_categories')
+def get_categories():
+    return render_template('categories.html',
+    categories = mongo.db.categories.find())
 
 if __name__ == '__main__':  
     app.run(host=os.getenv("IP", "0.0.0.0"),
