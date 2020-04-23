@@ -39,7 +39,7 @@ def edit_task(task_id):
 #  Activate the done button
 @app.route('/delete_task/<task_id>')
 def delete_task(task_id):
-    the_task =  mongo.db.tasks.delete_one({"_id": ObjectId(task_id)})
+    mongo.db.tasks.delete_one({"_id": ObjectId(task_id)})
     return redirect(url_for('get_tasks'))
 
 # Update the task in the database
