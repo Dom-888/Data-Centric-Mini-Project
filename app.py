@@ -82,6 +82,17 @@ def delete_category(category_id):
     return redirect(url_for('get_categories'))
 
 
+@app.route('/insert_category', methods=['POST'])
+def insert_category():
+    category_doc = {'category_name': request.form.get('category_name')}
+    mongo.db.categories.insert(category_doc)
+    return redirect(url_for('get_categories'))
+
+@app.route('/add_category')
+def add_category():
+    return render_template('addcategory.html')
+
+
 if __name__ == '__main__':  
     app.run(host=os.getenv("IP", "0.0.0.0"),
     port=int(os.getenv("PORT", "5000")), debug=True)
