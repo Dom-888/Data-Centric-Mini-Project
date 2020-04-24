@@ -17,13 +17,13 @@ mongo = PyMongo(app)
 def get_tasks():
     return render_template("tasks.html", tasks=mongo.db.tasks.find())
 
-
+@app.route('/') 
 @app.route('/add_task')
 def add_task():
     return render_template('addtask.html',
     categories=mongo.db.categories.find())  # The  variable 'categories" contains the results of the categories.find () query. It is possible to extract them with a for loop
 
-# Activate the add task button (wich  one?)
+# Activate the add task button
 @app.route('/insert_task', methods=['POST']) # Insert task must be inserted in the form tag with jinja
 def insert_task():
     tasks = mongo.db.tasks
@@ -57,8 +57,6 @@ def update_task(task_id):
     })
     return redirect(url_for('get_tasks'))
 
-
-@app.route('/') 
 @app.route('/get_categories')
 def get_categories():
     return render_template('categories.html', categories=mongo.db.categories.find())
