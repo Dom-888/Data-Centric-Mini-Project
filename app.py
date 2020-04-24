@@ -12,6 +12,7 @@ mongo = PyMongo(app)
 
 
 
+# landing page
 @app.route('/get_tasks')
 def get_tasks():
     return render_template("tasks.html", tasks=mongo.db.tasks.find())
@@ -22,7 +23,7 @@ def add_task():
     return render_template('addtask.html',
     categories=mongo.db.categories.find())  # The  variable 'categories" contains the results of the categories.find () query. It is possible to extract them with a for loop
 
-# Activate the add task button 
+# Activate the add task button (wich  one?)
 @app.route('/insert_task', methods=['POST']) # Insert task must be inserted in the form tag with jinja
 def insert_task():
     tasks = mongo.db.tasks
@@ -56,11 +57,24 @@ def update_task(task_id):
     })
     return redirect(url_for('get_tasks'))
 
+
 @app.route('/') 
 @app.route('/get_categories')
 def get_categories():
-    return render_template('categories.html',
-    categories = mongo.db.categories.find())
+    return render_template('categories.html', categories=mongo.db.categories.find())
+                           
+
+@app.route('/edit_category/<category_id>')
+def edit_category(category_id):
+    return render_template('editcategory.html', category=mongo.db.categories.find_one({'_id': ObjectId(category_id)}))
+
+
+@app.route('/update_category/<category_id>', methods=['POST'])
+def update_category(category_id):
+    mongo.db.categories.update(
+        {'_id': ObjectId(category_id)},
+        {'category_name': request.form.get('category_name')})
+    return redirect(url_for('get_categories'))
 
 if __name__ == '__main__':  
     app.run(host=os.getenv("IP", "0.0.0.0"),
